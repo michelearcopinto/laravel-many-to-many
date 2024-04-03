@@ -44,6 +44,32 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="tags" class="form-label">Tags</label>
+                    <select
+                        multiple
+
+                        class="form-select form-select-lg"
+                        name="tags[]"
+                        id="tags"
+                    >   
+                        @forelse($tags as $item)
+
+                            @if($errors->any())
+
+                                <option value="{{ $item->id }}" {{ in_array($item->id, old('tags', [])) ? 'selected' : '' }}>{{ $item->name }}</option>
+
+                                @else
+
+                                <option value="{{ $item->id }}" {{ $project->tags->contains($item->id) ? 'selected' : '' }} >{{ $item->name }}</option>
+
+                            @endif
+                        @empty
+                            <option value="">Non ci sono tags</option>
+                        @endforelse
+                    </select>
+                </div>   
+
+                <div class="mb-3">
                     <label for="description" class="form-label">Insert The Description</label>
                     <textarea name="description" id="description" cols="30" rows="10" class="form-control" maxlength="500">{{ old('description') ?? $project->description }}</textarea>
                     @error('description')

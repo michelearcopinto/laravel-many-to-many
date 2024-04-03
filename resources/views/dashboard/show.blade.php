@@ -9,6 +9,13 @@
             <span>slug: <strong>{{ $project->slug }}</strong></span>
             <br>
             <span>category: <strong>{{ $project->category ? $project->category->name : 'Nessuna categoria' }}</strong></span>
+            <br>
+            <span>Tags:</span>
+            @if ($project->tags->count())
+                @foreach ( $project->tags as $item )
+                    <span class="badge rounded-pill text-bg-primary">{{$item->name}}</span>
+                @endforeach
+            @endif
 
             @if ($project->cover_image)
                 <figure class="my-3">

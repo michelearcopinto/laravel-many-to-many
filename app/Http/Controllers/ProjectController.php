@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use App\Models\Project;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
@@ -39,7 +40,9 @@ class ProjectController extends Controller
     {
         $categories = Category::all();
 
-        return view('dashboard.create', compact('categories'));
+        $tags = Tag::all();
+
+        return view('dashboard.create', compact('categories', 'tags'));
     }
 
     /**
@@ -60,6 +63,10 @@ class ProjectController extends Controller
         $new_project = new Project();
         $new_project = Project::create($validated_data);
 
+        if ($request->has('tags')) {
+            $new_project->tags()->attach($request->tags);
+        };
+
         return redirect()->route('dashboard.projects.show', ['project' => $new_project->id]);
     }
 
@@ -78,7 +85,9 @@ class ProjectController extends Controller
     {
         $categories = Category::all();
 
-        return view('dashboard.edit', compact('project', 'categories'));
+        $tags = Tag::all();
+
+        return view('dashboard.edit', compact('project', 'categories', 'tags'));
     }
 
     /**
@@ -102,6 +111,10 @@ class ProjectController extends Controller
 
         $project->update($validated_data);
 
+        if ($request->has('tags')) {
+            $project->tags()->sync($request->tags);
+        };
+
         return redirect()->route('dashboard.projects.show', ['project' => $project->id]);
     }
 
@@ -110,6 +123,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $project->tags()->sync([]);
 
         if ($project->cover_image) {
 

@@ -48,7 +48,26 @@
                         @endforeach
                     </select>
                 </div>
-                
+
+                <div class="mb-3">
+                    <label for="tags" class="form-label">Tags</label>
+                    <select
+                        multiple
+
+                        class="form-select form-select-lg
+                        @error('tags')
+                            is_invalid
+                        @enderror"
+                        name="tags[]"
+                        id="tags"
+                    >   
+                        @forelse($tags as $item)
+                            <option value="{{ $item->id }}" {{ $item->id == old('tags') ? 'selected' : '' }}>{{ $item->name }}</option>
+                        @empty
+                            <option value="">Non ci sono tags</option>
+                        @endforelse
+                    </select>
+                </div>               
 
                 <div class="mb-3">
                     <input type="file" name="cover_image" id="cover_image"

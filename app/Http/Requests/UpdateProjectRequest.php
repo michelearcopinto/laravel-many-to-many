@@ -26,6 +26,7 @@ class UpdateProjectRequest extends FormRequest
             'description' => ['required', 'string', 'max:500'],
             'cover_image' => ['nullable', 'image'],
             'category_id' => ['nullable', 'exists:categories,id'],
+            'tags' => ['exists:tags,id'],
         ];
     }
 }
